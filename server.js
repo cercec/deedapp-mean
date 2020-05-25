@@ -35,25 +35,29 @@ app.use(express.static(path.join(__dirname, "dist")));
 var db;
 
 // Connection to the database
-mongodb.MongoClient.connect(process.env.MONGODB_URI, (err, client) => {
-  if (err) {
-    console.log("the connection with the databas is impossible: " + err);
-    process.exit(1);
+mongodb.MongoClient.connect(
+  process.env.MONGODB_URI || "mongodb://localhost:27017/test",
+  { useNewUrlParser: true },
+  (err, client) => {
+    if (err) {
+      console.log("the connection with the database is impossible: " + err);
+      process.exit(1);
+    }
+
+    // Save database object from the callback for reuse.
+    db = client.db(dbName);
+    console.log("Database connection ready");
+
+    db.collection(deedsCollection).createIndex({
+      "$**": "text",
+    });
+
+    // Initialize the app.
+    var server = app.listen(process.env.PORT || 8080, () => {
+      console.log("App now running on port", process.env.PORT);
+    });
   }
-
-  // Save database object from the callback for reuse.
-  db = client.db(dbName);
-  console.log("Database connection ready");
-
-  db.collection(deedsCollection).createIndex({
-    "$**": "text",
-  });
-
-  // Initialize the app.
-  var server = app.listen(process.env.PORT || 8080, () => {
-    console.log("App now running on port", process.env.PORT);
-  });
-});
+);
 
 // DEEDS API ROUTES BELOW
 
