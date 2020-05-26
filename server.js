@@ -33,7 +33,7 @@ var db;
 
 // Connection to the database
 mongodb.MongoClient.connect(
-  process.env[MONGODB_ADDON_URI] || "mongodb://localhost:27017/test",
+  process.env.MONGODB_ADDON_URI || "mongodb://localhost:27017/test",
   { useNewUrlParser: true },
   (err, client) => {
     if (err) {
@@ -42,7 +42,7 @@ mongodb.MongoClient.connect(
     }
 
     // Save database object from the callback for reuse.
-    db = client.db(process.env[MONGODB_ADDON_DB]);
+    db = client.db(process.env.MONGODB_ADDON_DB);
     console.log("Database connection ready");
 
     db.collection(deedsCollection).createIndex({
@@ -50,7 +50,7 @@ mongodb.MongoClient.connect(
     });
 
     // Initialize the app.
-    var server = app.listen(process.env[PORT] || 8080, () => {
+    var server = app.listen(process.env.PORT || 8080, () => {
       console.log("App now running on port", process.env[PORT]);
     });
   }
