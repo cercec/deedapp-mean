@@ -51,7 +51,7 @@ mongodb.MongoClient.connect(
 
     // Initialize the app.
     var server = app.listen(process.env.PORT || 8080, () => {
-      console.log("App now running on port", process.env[PORT]);
+      console.log("App now running on port", process.env.PORT);
     });
   }
 );
