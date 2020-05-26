@@ -7,9 +7,6 @@ const path = require("path");
 var ObjectID = mongodb.ObjectID;
 
 // Db Collection and URI
-const MONGODB_URI = "mongodb://deedadmin:oE1903xgMxKT2Sde9HVz@localhost:27017";
-const dbName = "dbdeeds";
-const PORT = 8080;
 const deedsCollection = "Deeds";
 const notesCollection = "Notes";
 
@@ -36,7 +33,7 @@ var db;
 
 // Connection to the database
 mongodb.MongoClient.connect(
-  process.env.MONGODB_URI || "mongodb://localhost:27017/test",
+  process.env.MONGODB_ADDON_URI || "mongodb://localhost:27017/test",
   { useNewUrlParser: true },
   (err, client) => {
     if (err) {
@@ -45,7 +42,7 @@ mongodb.MongoClient.connect(
     }
 
     // Save database object from the callback for reuse.
-    db = client.db(dbName);
+    db = client.db(MONGODB_ADDON_DB);
     console.log("Database connection ready");
 
     db.collection(deedsCollection).createIndex({
